@@ -13,9 +13,9 @@ exports.create = (req, res) => {
   }
 
   const insertData = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    phone_number: req.body.phone_number,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phoneNumber: req.body.phoneNumber,
   };
 
   Contact.create(insertData).then((data) => {
@@ -24,27 +24,18 @@ exports.create = (req, res) => {
 };
 
 // This function is used to find a contact
-exports.read = (req, res) => {
-  const last_name = req.body.last_name;
-  const condition = last_name
-    ? { last_name: { [Op.iLike]: `${last_name}%` } }
-    : null;
+exports.index = (req, res) => {
+  const search = req.query.search;
+  const where = search ? { lastName: { [Op.iLike]: `%${search}%` } } : null;
 
-  Contact.findAll({ where: condition }).then((data) => {
+  Contact.findAll({ where }).then((data) => {
     res.status(200).json({ success: true, data });
   });
 };
 
 // This function is used to get a contact by id
-exports.getContact = (req, res) => {
-  const errors = validationResult(req); // Finds the validation errors in this request and wraps them in an object with handy functions
-
-  if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() });
-    return;
-  }
-
-  Contact.findAll({ where: { id: req.body.id } }).then((data) => {
+exports.show = (req, res) => {
+  Contact.findAll({ where: { id: req.params.id } }).then((data) => {
     res.status(200).json({ success: true, data });
   });
 };
@@ -59,14 +50,15 @@ exports.update = (req, res) => {
   }
 
   const updateData = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    phone_number: req.body.phone_number,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phoneNumber: req.body.phoneNumber,
   };
+
   Contact.update(updateData, {
-    where: { id: req.body.id },
+    where: { id: req.params.id },
   }).then((response) => {
-    if (response == 1) {
+    if (response === 1) {
       res.status(200).json({
         success: true,
         data: { message: "Contact Succesfully Updated" },
@@ -89,9 +81,9 @@ exports.delete = (req, res) => {
   }
 
   Contact.destroy({
-    where: { id: req.body.id },
+    where: { id: req.params.id },
   }).then((response) => {
-    if (response == 1) {
+    if (response === 1) {
       res.status(200).json({
         success: true,
         data: { message: "Contact Succesfully Deleted" },

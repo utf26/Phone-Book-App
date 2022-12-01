@@ -5,15 +5,15 @@ module.exports = (database, Sequelize) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    first_name: {
+    firstName: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    last_name: {
+    lastName: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    phone_number: {
+    phoneNumber: {
       type: Sequelize.STRING,
       allowNull: false,
     },
