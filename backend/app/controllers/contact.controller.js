@@ -58,7 +58,7 @@ exports.update = (req, res) => {
   Contact.update(updateData, {
     where: { id: req.params.id },
   }).then((response) => {
-    if (response === 1) {
+    if (response[0] === 1) {
       res.status(200).json({
         success: true,
         data: { message: "Contact Succesfully Updated" },

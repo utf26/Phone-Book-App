@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Box, Text, Link, Flex, Input } from '@chakra-ui/react';
+import { Button, Box, Text, Flex, Input } from '@chakra-ui/react';
 import { RiContactsBookFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 
-const EditContact = (props) => {
+const EditContact = () => {
     const { id } = useParams()
 
     const [contact, setcontact] = useState([]);
 
     useEffect(() => {
-        axios.post("http://localhost:9000/api/contacts/get_data_by_id", { id })
+        axios.get(`${process.env.REACT_APP_API}/contacts/${id}`)
             .then(({ data }) => {
                 setcontact(data.data[0]);
             })
@@ -20,14 +20,14 @@ const EditContact = (props) => {
     }, [])
 
     const onSubmit = () => {
-        if (contact.id || contact.first_name || contact.last_name || contact.phone_number) {
-            axios.post("http://localhost:9000/api/contacts/update", contact)
+        if (contact.id || contact.firstName || contact.lastName || contact.phoneNumber) {
+            axios.patch(`${process.env.REACT_APP_API}/contacts/${id}`, contact)
                 .then((res) => {
                     if (res.status === 200) {
                         window.history.go(-1)
                     } else Promise.reject();
                 })
-                .catch((err) => alert("Something went wrong"));
+                .catch(() => alert("Something went wrong"));
         } else {
             return alert('please fill all fields')
         }
@@ -44,50 +44,63 @@ const EditContact = (props) => {
                     <RiContactsBookFill style={{ marginRight: "30px" }} size={50} />
                     <Text className="fw-bold h1">Phone Book App</Text>
                 </Box>
-                <Text className="h2 fw-bold d-flex justify-content-left mt-3">Edit Contact</Text>
-                <Box className="mt-4">
-                    <Text className="h5">
-                        First Name:
-                    </Text>
-                    <Flex>
-                        <Input
-                            placeholder="write here your first name"
-                            name="first_name"
-                            width={"100%"}
-                            value={contact.first_name}
-                            onChange={handleContactChange}
-                            required
-                        />
+                <Box className="d-flex justify-content-center">
+                    <Box className="col-md-6 ">
+                        <Text className="h3  fw-bold mt-5">Edit Contact</Text>
+                        <Box className="mt-4 col-md-12">
+                            <Text className="h5">
+                                First Name:
+                            </Text>
+                            <Flex>
+                                <Input
+                                    placeholder="first name"
+                                    name="firstName"
+                                    width={'100%'}
+                                    height={35}
+                                    border={'none'}
+                                    borderRadius={4}
+                                    value={contact.firstName}
+                                    onChange={handleContactChange}
+                                    required
+                                />
 
-                    </Flex>
-                    <Text className="h5 mt-2">Last Name:</Text>
-                    <Flex>
-                        <Input
-                            placeholder="write here your last name"
-                            name="last_name"
-                            width={"100%"}
-                            value={contact.last_name}
-                            onChange={handleContactChange}
-                            required
-                        />
+                            </Flex>
+                            <Text className="h5 mt-2">Last Name:</Text>
+                            <Flex>
+                                <Input
+                                    placeholder="last name"
+                                    name="lastName"
+                                    width={'100%'}
+                                    height={35}
+                                    border={'none'}
+                                    borderRadius={4}
+                                    value={contact.lastName}
+                                    onChange={handleContactChange}
+                                    required
+                                />
 
-                    </Flex>
-                    <Text className="h5 mt-2">Phone:</Text>
-                    <Flex>
-                        <Input
-                            placeholder="write here your phone number"
-                            name="phone_number"
-                            width={"100%"}
-                            value={contact.phone_number}
-                            onChange={handleContactChange}
-                            required
-                        />
+                            </Flex>
+                            <Text className="h5 mt-2">Phone:</Text>
+                            <Flex>
+                                <Input
+                                    placeholder="phone number"
+                                    name="phoneNumber"
+                                    width={'100%'}
+                                    height={35}
+                                    border={'none'}
+                                    borderRadius={4}
+                                    value={contact.phoneNumber}
+                                    onChange={handleContactChange}
+                                    required
+                                />
 
-                    </Flex>
-                    <Button
-                        className="btn btn-success mt-4"
-                        onClick={onSubmit}
-                    >Update Contact</Button>
+                            </Flex>
+                            <Button
+                                className="btn btn-success mt-4"
+                                onClick={onSubmit}
+                            >Update Contact</Button>
+                        </Box>
+                    </Box>
                 </Box>
             </Box>
         </Box>
