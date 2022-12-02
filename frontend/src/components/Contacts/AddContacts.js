@@ -7,9 +7,8 @@ export const AddContact = () => {
     const [formValues, setFormValues] = useState({ firstName: '', lastName: '', phoneNumber: '' })
     const onSubmit = () => {
         if (formValues.firstName && formValues.lastName && formValues.phoneNumber) {
-            // TODO: use env variable for domain
             axios.post(
-                `${process.env.REACT_APP_API}/contacts/`,
+                `${process.env.API_URL}/contacts/`,
                 formValues)
                 .then(res => {
                     if (res.status === 200)

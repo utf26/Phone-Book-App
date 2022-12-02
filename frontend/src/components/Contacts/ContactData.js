@@ -8,10 +8,9 @@ import { Link } from "react-router-dom";
 
 const ContactData = (props) => {
     const { id, firstName, lastName, phoneNumber } = props.obj;
-    console.log(id);
     const deleteContact = () => {
         axios
-            .delete(`${process.env.REACT_APP_API}/contacts/${id}`)
+            .delete(`${process.env.API_URL}/contacts/${id}`)
             .then((res) => {
                 if (res.status === 200) {
                     window.location.reload();

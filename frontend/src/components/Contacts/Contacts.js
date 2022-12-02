@@ -8,9 +8,8 @@ import { Box, Input, Text } from "@chakra-ui/react";
 export const Contacts = () => {
     const [contacts, setContacts] = useState([]);
     useEffect(() => {
-        // TODO: use env variable for domain
         axios
-            .get(`${process.env.REACT_APP_API}/contacts`)
+            .get(`${process.env.API_URL}/contacts`)
             .then(({ data }) => {
                 setContacts(data.data);
             })
@@ -20,8 +19,7 @@ export const Contacts = () => {
     }, []);
 
     const handleSearchChange = (e) => {
-        // TODO: use env variable for domain
-        axios.get(`${process.env.REACT_APP_API}/contacts/?search=${e.target.value}`)
+        axios.get(`${process.env.API_URL}/contacts?search=${e.target.value}`)
             .then(({ data }) => {
                 setContacts(data.data);
             })
@@ -39,7 +37,6 @@ export const Contacts = () => {
                 </Box>
                 <Box className="pt-4 d-flex ">
                     <Text className="h1 w-100 fw-bold">Contacts</Text>
-                    {/*TODO: update routes to camel case*/}
                     <Link to={'/addContact'} className="float-end btn btn-primary justify-content-end"
                         style={{ width: "10rem", height: "40px" }}> + Add Contacts</Link>
                 </Box>

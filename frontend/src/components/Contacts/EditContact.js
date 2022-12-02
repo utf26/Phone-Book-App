@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 const EditContact = () => {
     const { id } = useParams()
 
-    const [contact, setcontact] = useState([]);
+    const [contact, setContact] = useState([]);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/contacts/${id}`)
+        axios.get(`${process.env.API_URL}/contacts/${id}`)
             .then(({ data }) => {
-                setcontact(data.data[0]);
+                setContact(data.data[0]);
             })
             .catch((error) => {
                 console.log(error);
@@ -21,7 +21,7 @@ const EditContact = () => {
 
     const onSubmit = () => {
         if (contact.id || contact.firstName || contact.lastName || contact.phoneNumber) {
-            axios.patch(`${process.env.REACT_APP_API}/contacts/${id}`, contact)
+            axios.patch(`${process.env.API_URL}/contacts/${id}`, contact)
                 .then((res) => {
                     if (res.status === 200) {
                         window.history.go(-1)
@@ -35,7 +35,7 @@ const EditContact = () => {
 
     const handleContactChange = e => {
         const { target } = e;
-        setcontact(prevState => ({ ...prevState, [target.name]: target.value }));
+        setContact(prevState => ({ ...prevState, [target.name]: target.value }));
     };
     return (<>
         <Box className='bg-light vh-100'>
